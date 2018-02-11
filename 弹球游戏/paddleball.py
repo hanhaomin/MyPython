@@ -11,21 +11,18 @@ canvas = Canvas(tk, width=500, height=400, bd=0, highlightthickness=0)
 canvas.pack()
 tk.update()
 
-allBall = []
-
+score = Score(canvas, 'green')
 paddle = Paddle(canvas, 'blue')
-
-randColor = ['red', 'blue', 'yellow', 'black', 'purple']
-
-for x in range(1):
-    random.shuffle(randColor)
-    ball = Ball(canvas, randColor[0], 100, 20*x)
-    allBall.append( ball )
+ball = Ball(canvas, paddle, score, 'red')
+game_over_text = canvas.create_text(250, 200, text='GAME OVER', state='hidden')
 
 while 1:
-    for x in range(1):
-        allBall[x].draw()
-    paddle.draw()
+    if ball.hit_bottom == False and paddle.started == True:
+        ball.draw()
+        paddle.draw()
+    if ball.hit_bottom == True:
+        time.sleep(1)
+        canvas.itemconfig(game_over_text, state='normal')
     tk.update_idletasks()
     tk.update()
     time.sleep(0.01)
